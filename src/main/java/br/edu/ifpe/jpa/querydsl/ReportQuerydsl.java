@@ -31,11 +31,19 @@ public class ReportQuerydsl implements IReportGenerator {
 	
 	@Override
 	public double getClientTotalCash(String email) {
-		throw new UnsupportedOperationException("Not implemented yet.");
+		QClient client = QClient.client;
+		
+		return helper.execute(query ->
+			query
+				.select(client.accounts)
+				.from(client)
+				.where(client.email.eq(email))
+				.
+		);
 	}
 
 	@Override
 	public List<String> getBestClientsEmails(int agency, int rankingSize) {
-		throw new UnsupportedOperationException("Not implemented yet.");
+		
 	}
 }
