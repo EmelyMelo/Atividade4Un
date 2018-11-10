@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Built-By: 20151d12gr0049
-Build-Jdk: 1.8.0_131
+Built-By: casas bahia
+Build-Jdk: 1.8.0_151
 Created-By: Maven Integration for Eclipse
 

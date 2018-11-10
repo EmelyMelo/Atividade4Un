@@ -9,6 +9,7 @@ import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQuery;
 
 import br.edu.ifpe.jpa.IReportGenerator;
+import br.edu.ifpe.jpa.entities.QAccount;
 import br.edu.ifpe.jpa.entities.QClient;
 
 public class ReportQuerydsl implements IReportGenerator {
@@ -31,19 +32,28 @@ public class ReportQuerydsl implements IReportGenerator {
 	
 	@Override
 	public double getClientTotalCash(String email) {
-		QClient client = QClient.client;
+		QAccount conta = QAccount.account;
 		
 		return helper.execute(query ->
 			query
-				.select(client.accounts)
-				.from(client)
-				.where(client.email.eq(email))
-				.
+				.select(conta.balance.sum())
+				.where(conta.client.email.eq(email))
+				.groupBy(conta.balance)
+				.fetch()
 		);
 	}
 
 	@Override
 	public List<String> getBestClientsEmails(int agency, int rankingSize) {
+		QAccount conta = QAccount.account;
 		
+		return helper.execute(query ->
+			query
+				.select(conta.client.email)
+				.where(conta.agency.eq(agency))
+				.orderBy(conta.balance.sum().asc())
+				.limit(rankingSize)
+				.fetch()
+		);
 	}
 }

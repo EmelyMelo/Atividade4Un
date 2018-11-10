@@ -24,11 +24,23 @@ public class ReportJinq implements IReportGenerator {
 	
 	@Override
 	public double getClientTotalCash(String email) {
-		throw new UnsupportedOperationException("Not implemented yet.");
+		return helper.execute(Account.class, streams ->
+			streams
+				.where(conta -> conta.getClient().getEmail().equals(email))
+				.sumDouble(conta -> conta.getBalance())
+		);
 	}
 
 	@Override
 	public List<String> getBestClientsEmails(int agency, int rankingSize) {
-		throw new UnsupportedOperationException("Not implemented yet.");
+		return helper.execute(Account.class, streams ->
+			streams
+				.where(conta -> conta.getClient().getEmail())
+				.where(conta -> conta.getAgency().equals(agency))
+				.sumDouble(conta -> conta.getBalance())
+				.sortedBy(conta -> conta.getBalance())
+				.limit(rankingSize)
+				.toList()
+		);
 	}
 }
